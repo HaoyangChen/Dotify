@@ -56,6 +56,8 @@ class MainActivity : AppCompatActivity() {
                     userName.setText(userNameInput.text)
                     userNameInput.visibility = View.GONE
                     userName.visibility = View.VISIBLE
+                } else {
+                    Toast.makeText(this, "Username may not be empty", Toast.LENGTH_SHORT).show()
                 }
             }
         }

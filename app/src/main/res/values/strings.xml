@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Dotify</string>
+    <string name="userName">Eric Chen</string>
+    <string name="changeUserText">CHANGE USER</string>
+    <string name="songImageDescription">cover image of one call away</string>
+    <string name="songTitleText">One Call Away</string>
+    <string name="artistName">Charlie Puth</string>
+    <string name="songNumberText"></string>
+    <string name="previousBtnDescr">previous song button</string>
+    <string name="playBtnDescr">play button</string>
+    <string name="nextBtnDescr">next song button</string>
 </resources>

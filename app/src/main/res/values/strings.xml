@@ -9,4 +9,5 @@
     <string name="previousBtnDescr">previous song button</string>
     <string name="playBtnDescr">play button</string>
     <string name="nextBtnDescr">next song button</string>
+    <string name="usernameHint">username</string>
 </resources>

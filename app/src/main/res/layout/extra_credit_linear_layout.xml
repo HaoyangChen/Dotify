@@ -24,7 +24,10 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:visibility="gone"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:autofillHints="Username"
+            android:hint="@string/usernameHint"
+            />
 
         <Button
             android:id="@+id/btnChangeUser"

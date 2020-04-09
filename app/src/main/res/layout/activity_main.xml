@@ -27,6 +27,9 @@
         app:layout_constraintVertical_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         android:visibility="gone"
+        android:autofillHints="Username"
+        android:inputType="text"
+        android:hint="@string/usernameHint"
         />
 
     <Button

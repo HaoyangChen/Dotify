@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="containerMargin">16dp</dimen>
+    <dimen name="containerPadding">16dp</dimen>
     <dimen name="mediaControlTop">10dp</dimen>
     <dimen name="songTitleSize">30sp</dimen>
     <dimen name="artistNameSize">20sp</dimen>

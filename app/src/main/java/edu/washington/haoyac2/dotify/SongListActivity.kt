@@ -13,17 +13,28 @@ class SongListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song_list)
-        val listOfSongs = mutableListOf<Song>()
+        var listOfSongs = mutableListOf<Song>()
         listOfSongs.addAll(SongDataProvider.getAllSongs())
 //        val listOfSongs: List<Song> = SongDataProvider.getAllSongs()
         val songAdapter = SongListAdapter(listOfSongs)
-        rvSongs.adapter = songAdapter
+        var currentPlay: Song? = null
+
+        songAdapter.onSongClickListener = { title, artist, song ->
+            songTitleArtist.text = title.plus(" - ").plus(artist)
+            currentPlay = song;
+        }
+
 
         btnShuffle.setOnClickListener{
-            val newSong = listOfSongs.apply{
+//            val songAdapter = SongListAdapter(listOfSongs)
+//            rvSongs.adapter = songAdapter
+            val listToShuffle = listOfSongs.map{ it.copy() }.toMutableList()
+            val shuffledList = listToShuffle.apply{
                 shuffle()
             }
-            songAdapter.change(newSong)
+            listOfSongs = shuffledList
+            songAdapter.change(shuffledList)
         }
+        rvSongs.adapter = songAdapter
     }
 }

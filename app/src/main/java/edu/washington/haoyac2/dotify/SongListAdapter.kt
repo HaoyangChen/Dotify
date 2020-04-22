@@ -1,5 +1,6 @@
 package edu.washington.haoyac2.dotify
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import org.w3c.dom.Text
 
 class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongListAdapter.SongViewHolder>() {
     private var listOfSongs: List<Song> = initialListOfSong.toList()
+    var onSongClickListener: ((title: String, artist: String, song: Song) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false)
         return SongViewHolder(view)
@@ -31,18 +33,19 @@ class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongLi
         listOfSongs = newSong
     }
 
-    class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val tvSongTitle = itemView.findViewById<TextView>(R.id.tvSongTitle)
         private val artistName = itemView.findViewById<TextView>(R.id.artistName)
         private val ivSongImage = itemView.findViewById<ImageView>(R.id.ivSongImage)
+        private val songTitleArtist = itemView.findViewById<TextView>(R.id.songTitleArtist)
         fun bind(song: Song, position: Int) {
             tvSongTitle.text = song.title
             artistName.text = song.artist
             ivSongImage.setImageResource(song.largeImageID)
 
-//            itemView.setOnClickListener {
-//                onSongClickListener?.invoke(song)
-//            }
+            itemView.setOnClickListener {
+                onSongClickListener?.invoke(song.title, song.artist, song)
+            }
         }
     }
 }

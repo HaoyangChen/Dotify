@@ -16,27 +16,25 @@
         android:id="@+id/tvSongTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="erperkerkeooekreorkoe"
+        tools:text="@string/songArtistTestString"
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintLeft_toRightOf="@id/ivSongImage"
         app:layout_constraintTop_toTopOf="@id/ivSongImage"
         app:layout_constraintBottom_toTopOf="@id/artistName"
-        android:layout_marginStart="16dp"
-        android:textSize="20sp"
+        android:layout_marginStart="@dimen/containerPadding"
+        android:textSize="@dimen/artistNameSize"
         />
 
     <TextView
         android:id="@+id/artistName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="artistartist"
+        tools:text="@string/songArtistTestString"
         app:layout_constraintLeft_toRightOf="@id/ivSongImage"
         app:layout_constraintTop_toBottomOf="@id/tvSongTitle"
         app:layout_constraintBottom_toBottomOf="@id/ivSongImage"
-        android:layout_marginStart="16dp"
-        android:textSize="20sp"
+        android:layout_marginStart="@dimen/containerPadding"
+        android:textSize="@dimen/artistNameSize"
         />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

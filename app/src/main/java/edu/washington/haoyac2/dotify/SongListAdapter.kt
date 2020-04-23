@@ -14,6 +14,8 @@ import org.w3c.dom.Text
 class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongListAdapter.SongViewHolder>() {
     private var listOfSongs: List<Song> = initialListOfSong.toList()
     var onSongClickListener: ((title: String, artist: String, song: Song) -> Unit)? = null
+    var onSongLongClickListener: ((title: String, artist: String, pos: Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false)
         return SongViewHolder(view)
@@ -33,6 +35,12 @@ class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongLi
         listOfSongs = newSong
     }
 
+    fun updateRemoval(removedList: List<Song>) {
+        this.listOfSongs = removedList
+        notifyDataSetChanged()
+    }
+
+
     inner class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val tvSongTitle = itemView.findViewById<TextView>(R.id.tvSongTitle)
         private val artistName = itemView.findViewById<TextView>(R.id.artistName)
@@ -45,6 +53,11 @@ class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongLi
 
             itemView.setOnClickListener {
                 onSongClickListener?.invoke(song.title, song.artist, song)
+            }
+            itemView.setOnLongClickListener {
+                onSongLongClickListener?.invoke(song.title, song.artist, position)
+                notifyDataSetChanged()
+                true
             }
         }
     }

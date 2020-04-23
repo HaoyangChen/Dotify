@@ -6,4 +6,5 @@
     <dimen name="artistNameSize">20sp</dimen>
     <dimen name="zeroDP">0dp</dimen>
     <dimen name="mediaControlHeight">50dp</dimen>
+    <dimen name="zeroHeight">0dp</dimen>
 </resources>

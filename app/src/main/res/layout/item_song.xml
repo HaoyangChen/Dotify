@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:foreground="?selectableItemBackground">
+    android:foreground="?selectableItemBackground"
+    android:padding="12dp">
 
     <ImageView
         android:id="@+id/ivSongImage"
@@ -20,7 +21,7 @@
         app:layout_constraintLeft_toRightOf="@id/ivSongImage"
         app:layout_constraintTop_toTopOf="@id/ivSongImage"
         app:layout_constraintBottom_toTopOf="@id/artistName"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:textSize="20sp"
         />
 
@@ -28,11 +29,11 @@
         android:id="@+id/artistName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="fefefefefe"
+        tools:text="artistartist"
         app:layout_constraintLeft_toRightOf="@id/ivSongImage"
         app:layout_constraintTop_toBottomOf="@id/tvSongTitle"
         app:layout_constraintBottom_toBottomOf="@id/ivSongImage"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:textSize="20sp"
         />
 

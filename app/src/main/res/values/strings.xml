@@ -10,4 +10,6 @@
     <string name="playBtnDescr">play button</string>
     <string name="nextBtnDescr">next song button</string>
     <string name="usernameHint">username</string>
+    <string name="shuffle">shuffle</string>
+    <string name="songArtistTestString">foiafjaifjoejfioeajfeiofjeofjoefjeifjoejfeoi</string>
 </resources>

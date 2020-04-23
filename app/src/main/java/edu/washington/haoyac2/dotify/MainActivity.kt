@@ -4,19 +4,32 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.ericchee.songdataprovider.Song
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val SONG_KEY = "SONG_KEY"
+    }
+
     private var randomPlayNumber = Random.nextInt(1000, 50000)
     private var showApplyBtn = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val song = intent.getParcelableExtra<Song>(SONG_KEY)
+        songImage.setImageResource(song.largeImageID)
+        songTitle.text = song.title
+        artist.text = song.artist
 
         val songNumber = findViewById<TextView>(R.id.songNumber)
         songNumber.text = "$randomPlayNumber plays"
@@ -65,5 +78,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun getMyColor(resID: Int): Int {
         return ContextCompat.getColor(this, resID)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

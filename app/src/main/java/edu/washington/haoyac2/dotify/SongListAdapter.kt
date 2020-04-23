@@ -38,16 +38,14 @@ class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongLi
         notifyDataSetChanged()
     }
 
-
     inner class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val tvSongTitle = itemView.findViewById<TextView>(R.id.tvSongTitle)
         private val artistName = itemView.findViewById<TextView>(R.id.artistName)
         private val ivSongImage = itemView.findViewById<ImageView>(R.id.ivSongImage)
-        private val songTitleArtist = itemView.findViewById<TextView>(R.id.songTitleArtist)
         fun bind(song: Song, position: Int) {
             tvSongTitle.text = song.title
             artistName.text = song.artist
-            ivSongImage.setImageResource(song.largeImageID)
+            ivSongImage.setImageResource(song.smallImageID)
 
             itemView.setOnClickListener {
                 onSongClickListener?.invoke(song.title, song.artist, song)

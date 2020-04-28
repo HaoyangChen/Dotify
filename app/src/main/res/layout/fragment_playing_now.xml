@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:padding="@dimen/containerPadding"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/userName"
+        app:layout_constraintTop_toTopOf="@id/btnChangeUser"
+        app:layout_constraintBottom_toBottomOf="@id/btnChangeUser"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/userNameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/btnChangeUser"
+        app:layout_constraintBottom_toBottomOf="@id/btnChangeUser"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="gone"
+        android:autofillHints="Username"
+        android:inputType="text"
+        android:hint="@string/usernameHint"
+        />
+
+    <Button
+        android:id="@+id/btnChangeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/changeUserText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierChangeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="userName, btnChangeUser, userNameInput" />
+
+    <ImageButton
+        android:id="@+id/songImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/songImageDescription"
+        android:scaleType="fitCenter"
+        android:src="@drawable/one_call_away"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrierChangeUser"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineImage"
+        android:background="@android:color/transparent"
+        android:foreground="?selectableItemBackground"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7"/>
+
+    <TextView
+        android:id="@+id/songTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/songTitleText"
+        android:textSize="@dimen/songTitleSize"
+        app:layout_constraintTop_toBottomOf="@id/guidelineImage"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        />
+
+    <TextView
+        android:id="@+id/artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/artistName"
+        android:textSize="@dimen/artistNameSize"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/songTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/songNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/artist"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <ImageButton
+        android:id="@+id/previousBtn"
+        android:layout_width="@dimen/zeroDP"
+        android:layout_height="@dimen/mediaControlHeight"
+        android:src="@drawable/ic_previous"
+        android:contentDescription="@string/previousBtnDescr"
+        app:layout_constraintEnd_toStartOf="@+id/musicPlayBtn"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/songNumber"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:foreground="?selectableItemBackground"
+        android:layout_marginTop="@dimen/mediaControlTop"
+        />
+
+    <ImageButton
+        android:id="@+id/musicPlayBtn"
+        android:layout_width="@dimen/zeroDP"
+        android:layout_height="@dimen/mediaControlHeight"
+        android:src="@drawable/ic_play"
+        android:contentDescription="@string/playBtnDescr"
+        app:layout_constraintEnd_toStartOf="@+id/nextBtn"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/previousBtn"
+        app:layout_constraintTop_toBottomOf="@+id/songNumber"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:foreground="?selectableItemBackground"
+        android:layout_marginTop="@dimen/mediaControlTop"
+        />
+
+    <ImageButton
+        android:id="@+id/nextBtn"
+        android:layout_width="@dimen/zeroDP"
+        android:layout_height="@dimen/mediaControlHeight"
+        android:src="@drawable/ic_next"
+        android:contentDescription="@string/nextBtnDescr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/musicPlayBtn"
+        app:layout_constraintTop_toBottomOf="@+id/songNumber"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:foreground="?selectableItemBackground"
+        android:layout_marginTop="@dimen/mediaControlTop"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

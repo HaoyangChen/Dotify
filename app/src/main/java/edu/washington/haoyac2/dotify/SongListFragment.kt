@@ -1,15 +1,12 @@
 package edu.washington.haoyac2.dotify
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ericchee.songdataprovider.Song
-import com.ericchee.songdataprovider.SongDataProvider
 import kotlinx.android.synthetic.main.activity_song_list.*
 
 class SongListFragment: Fragment() {
@@ -64,27 +61,18 @@ class SongListFragment: Fragment() {
 
     }
 
-//    fun shuffleList() {
-//        listOfSongs.shuffle()
-//        val songListToShuffle: MutableList<Song> = listOfSongs
-//        songListAdapter.shuffle(songListToShuffle)
-//
-//    }
-
     fun shuffleList() {
         val listToShuffle = listOfSongs.map { it.copy() }?.toMutableList()
 
         val newList = listToShuffle?.apply {
             shuffle()
         }
-
         if (newList != null) {
             songListAdapter?.shuffle(newList)
             this.listOfSongs = newList.toMutableList()
         }
         rvSongs.scrollToPosition(0)
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

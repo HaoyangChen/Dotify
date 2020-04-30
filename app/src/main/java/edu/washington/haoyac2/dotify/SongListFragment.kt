@@ -15,33 +15,14 @@ import kotlinx.android.synthetic.main.activity_song_list.*
 class SongListFragment: Fragment() {
     private lateinit var songListAdapter: SongListAdapter
     private lateinit var listOfSongs : MutableList<Song>
-//    private var songListAdapter: SongListAdapter? = null
-//   private var listOfSongs: Array<Song>? = null;
     private var onSongClickedListener: OnSongClickedListener? = null
 
     companion object {
         val TAG: String = SongListFragment::class.java.simpleName
         const val SONG_LIST_STATE = "song_list_state"
         const val ARG_SONG = "arg_song"
-//        private const val LIST = "list"
     }
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        if (savedInstanceState == null) {
-//            arguments?.let { args ->
-//                val songList = args.getParcelableArray(ARG_SONG)
-//                if (songList != null) {
-//                    this.listOfSongs = songList as Array<Song>
-//                }
-//            }
-//        } else {
-//            with(savedInstanceState) {
-//                listOfSongs = getParcelableArray(SONG_LIST_STATE) as Array<Song>?
-//            }
-//        }
-//    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -62,11 +43,9 @@ class SongListFragment: Fragment() {
             }
         } else {
             arguments?.let { args ->
-//                listOfSongs =
-//                    args.getParcelableArrayList<Song>(ARG_SONG) as MutableList<Song>
                 val songList = args.getParcelableArrayList<Song>(ARG_SONG)
                 if (songList != null) {
-                    this.listOfSongs = songList as MutableList<Song>
+                    this.listOfSongs = songList
                 }
             }
         }
@@ -75,38 +54,37 @@ class SongListFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // val songAdapter = SongListAdapter(listOfSongs)
-//        songListAdapter = listOfSongs?.toList()?.let { SongListAdapter(it as MutableList<Song>) }
-//        rvSongs.adapter = songListAdapter
 
         songListAdapter = SongListAdapter(listOfSongs)
         rvSongs.adapter = songListAdapter
 
-        songListAdapter?.onSongClickListener = { song ->
+        songListAdapter.onSongClickListener = { song ->
             onSongClickedListener?.onSongClicked(song)
         }
 
     }
 
-    fun shuffleList() {
-        listOfSongs.shuffle()
-        val songListToShuffle: MutableList<Song> = listOfSongs
-        songListAdapter.shuffle(songListToShuffle)
+//    fun shuffleList() {
+//        listOfSongs.shuffle()
+//        val songListToShuffle: MutableList<Song> = listOfSongs
+//        songListAdapter.shuffle(songListToShuffle)
+//
+//    }
 
+    fun shuffleList() {
+        val listToShuffle = listOfSongs.map { it.copy() }?.toMutableList()
+
+        val newList = listToShuffle?.apply {
+            shuffle()
+        }
+
+        if (newList != null) {
+            songListAdapter?.shuffle(newList)
+            this.listOfSongs = newList.toMutableList()
+        }
+        rvSongs.scrollToPosition(0)
     }
 
-//    fun shuffleList() {
-//        val shuffleList = listOfSongs?.map { it.copy() }?.toMutableList()
-//
-//        val newList = shuffleList?.apply {
-//            shuffle()
-//        }
-//
-//        if (newList != null) {
-//            songListAdapter?.shuffle(newList)
-//            this.listOfSongs = newList.toTypedArray()
-//        }
-//    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

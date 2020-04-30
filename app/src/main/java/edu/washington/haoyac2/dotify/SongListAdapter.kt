@@ -41,9 +41,17 @@ class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongLi
 //        notifyDataSetChanged()
 //    }
 
-    fun shuffle(newSongList: MutableList<Song>) {
-        listOfSongs = newSongList
-        notifyDataSetChanged()
+//    fun shuffle(newSongList: MutableList<Song>) {
+//        listOfSongs = newSongList
+//        notifyDataSetChanged()
+//    }
+
+    fun shuffle(newList: List<Song>) {
+        val callback = SongDiffCallback(this.listOfSongs, newList)
+        val diffResult = DiffUtil.calculateDiff(callback)
+        diffResult.dispatchUpdatesTo(this)
+
+        this.listOfSongs = newList
     }
 
     inner class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

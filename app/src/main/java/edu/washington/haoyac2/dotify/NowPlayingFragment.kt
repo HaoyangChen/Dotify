@@ -15,7 +15,6 @@ import kotlin.random.Random
  * A simple [Fragment] subclass.
  */
 class NowPlayingFragment : Fragment() {
-    private var song: Song? = null
     private var randomPlayNumber = Random.nextInt(1000, 50000000)
     private var showApplyBtn = false
 
@@ -35,12 +34,6 @@ class NowPlayingFragment : Fragment() {
         } else {
             randomPlayNumber = Random.nextInt(1000, 50000000)
         }
-//        arguments?.let { args ->
-//            val song = args.getParcelable<Song>(ARG_SONG)
-//            if (song != null) {
-//                this.song = song
-//            }
-//        }
     }
 
     fun updateSong(song: Song) {
@@ -59,7 +52,6 @@ class NowPlayingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         updateSongViews()
     }
 
@@ -71,13 +63,8 @@ class NowPlayingFragment : Fragment() {
                 artist.text = song.artist
                 songImage.setImageResource(song.largeImageID)
             }
-
         }
-//        song?.let {
-//            songImage.setImageResource(it.largeImageID)
-//            songTitle.text = it.title
-//            artist.text = it.artist
-//        }
+
         songNumber.text = "$randomPlayNumber plays"
         previousBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
@@ -85,13 +72,6 @@ class NowPlayingFragment : Fragment() {
         nextBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to next track", Toast.LENGTH_SHORT).show()
         }
-//        songImage.setOnLongClickListener{
-////            userName.setTextColor(getMyColor(R.color.lightBlue))
-////            songTitle.setTextColor(getMyColor(R.color.lightBlue))
-////            artist.setTextColor(getMyColor(R.color.lightBlue))
-////            songNumber.setTextColor(getMyColor(R.color.lightBlue))
-//            true
-//        }
 
         musicPlayBtn.setOnClickListener{
             randomPlayNumber += 1
@@ -105,7 +85,6 @@ class NowPlayingFragment : Fragment() {
 
     private fun btnChangeUserClicked() {
         if (!showApplyBtn) {
-            Log.i("eric3", "show")
             btnChangeUser.text = "Apply"
             showApplyBtn = true
             userNameInput.setText(userName.text)
@@ -125,10 +104,11 @@ class NowPlayingFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        randomPlayNumber?.let { outState.putInt(PLAY_COUNT, it) }
         super.onSaveInstanceState(outState)
-        outState.run {
-            putInt(PLAY_COUNT, randomPlayNumber)
-        }
+//        outState.run {
+//            putInt(PLAY_COUNT, randomPlayNumber)
+//        }
     }
 
 }

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SongListActivity"
     android:padding="12dp">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,38 +17,5 @@
         android:layout_marginBottom="50dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_song" />
-
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/miniPlayer"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/mediaControlHeight"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        android:background="@color/white"-->
-<!--        android:elevation="5dp"-->
-<!--        android:foreground="?selectableItemBackground">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/songTitleArtist"-->
-<!--            android:layout_width="@dimen/zeroHeight"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/btnShuffle"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/btnShuffle"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintRight_toLeftOf="@id/btnShuffle"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:ellipsize="marquee"-->
-<!--            android:singleLine="true"-->
-<!--            tools:text="@string/songArtistTestString" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btnShuffle"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="@dimen/mediaControlHeight"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            android:text="@string/shuffle"/>-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

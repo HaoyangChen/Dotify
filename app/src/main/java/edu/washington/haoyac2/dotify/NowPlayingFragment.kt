@@ -16,35 +16,44 @@ import kotlin.random.Random
  */
 class NowPlayingFragment : Fragment() {
     private var song: Song? = null
-    private var randomPlayNumber = Random.nextInt(1000, 50000)
+    private var randomPlayNumber = Random.nextInt(1000, 50000000)
     private var showApplyBtn = false
 
     companion object {
         val TAG: String = NowPlayingFragment::class.java.simpleName
-        const val ARG_SONG = "arg_song"
+        const val SONG_REF = "song_ref"
+        const val PLAY_COUNT = "play_count"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let { args ->
-            val song = args.getParcelable<Song>(ARG_SONG)
-            if (song != null) {
-                this.song = song
+        if (savedInstanceState != null) {
+            with(savedInstanceState) {
+                randomPlayNumber = getInt(PLAY_COUNT, Random.nextInt(1000, 50000000))
             }
+        } else {
+            randomPlayNumber = Random.nextInt(1000, 50000000)
         }
+//        arguments?.let { args ->
+//            val song = args.getParcelable<Song>(ARG_SONG)
+//            if (song != null) {
+//                this.song = song
+//            }
+//        }
     }
 
     fun updateSong(song: Song) {
-        this.song = song
-        updateSongViews()
+        songImage.setImageResource(song.largeImageID)
+        songTitle.text = song.title
+        artist.text = song.artist
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_playing_now, container, false)
     }
 
@@ -55,29 +64,36 @@ class NowPlayingFragment : Fragment() {
     }
 
     private fun updateSongViews() {
-        song?.let {
-            songImage.setImageResource(it.largeImageID)
-            songTitle.text = it.title
-            artist.text = it.artist
+        arguments?.let { args ->
+            val song = args.getParcelable<Song>(SONG_REF)
+            if (song != null) {
+                songTitle.text = song.title
+                artist.text = song.artist
+                songImage.setImageResource(song.largeImageID)
+            }
+
         }
+//        song?.let {
+//            songImage.setImageResource(it.largeImageID)
+//            songTitle.text = it.title
+//            artist.text = it.artist
+//        }
         songNumber.text = "$randomPlayNumber plays"
-        Log.i("songNumber", "started")
         previousBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
         }
         nextBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to next track", Toast.LENGTH_SHORT).show()
         }
-        songImage.setOnLongClickListener{
-//            userName.setTextColor(getMyColor(R.color.lightBlue))
-//            songTitle.setTextColor(getMyColor(R.color.lightBlue))
-//            artist.setTextColor(getMyColor(R.color.lightBlue))
-//            songNumber.setTextColor(getMyColor(R.color.lightBlue))
-            true
-        }
+//        songImage.setOnLongClickListener{
+////            userName.setTextColor(getMyColor(R.color.lightBlue))
+////            songTitle.setTextColor(getMyColor(R.color.lightBlue))
+////            artist.setTextColor(getMyColor(R.color.lightBlue))
+////            songNumber.setTextColor(getMyColor(R.color.lightBlue))
+//            true
+//        }
 
         musicPlayBtn.setOnClickListener{
-            Log.i("eric2", "clicked")
             randomPlayNumber += 1
             songNumber.text = "$randomPlayNumber plays"
         }
@@ -108,5 +124,11 @@ class NowPlayingFragment : Fragment() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.run {
+            putInt(PLAY_COUNT, randomPlayNumber)
+        }
+    }
 
 }

@@ -73,7 +73,7 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
     }
 
     override fun onSongClicked(song: Song) {
-        songTitleArtist.text = song.title.plus("-").plus(song.artist)
+        songTitleArtist.text = song.title.plus(" - ").plus(song.artist)
         currentSong = song
     }
 

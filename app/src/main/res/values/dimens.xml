@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="containerPadding">16dp</dimen>
+    <dimen name="containerPadding">9dp</dimen>
     <dimen name="mediaControlTop">10dp</dimen>
-    <dimen name="songTitleSize">30sp</dimen>
+    <dimen name="songTitleSize">27sp</dimen>
     <dimen name="artistNameSize">20sp</dimen>
     <dimen name="zeroDP">0dp</dimen>
     <dimen name="mediaControlHeight">50dp</dimen>

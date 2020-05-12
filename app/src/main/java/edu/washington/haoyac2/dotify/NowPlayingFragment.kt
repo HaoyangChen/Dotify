@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.ericchee.songdataprovider.Song
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_playing_now.*
 import kotlin.random.Random
 
@@ -14,31 +14,36 @@ import kotlin.random.Random
  * A simple [Fragment] subclass.
  */
 class NowPlayingFragment : Fragment() {
-    private var randomPlayNumber = Random.nextInt(1000, 50000000)
+//    private var randomPlayNumber = Random.nextInt(1000, 50000000)
     private var showApplyBtn = false
+    private lateinit var dotifyApp: DotifyApp
+    private var currentSong: Song? = null
 
     companion object {
         val TAG: String = NowPlayingFragment::class.java.simpleName
-        const val SONG_REF = "song_ref"
-        const val PLAY_COUNT = "play_count"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        dotifyApp = context?.applicationContext as DotifyApp
 
-        if (savedInstanceState != null) {
-            with(savedInstanceState) {
-                randomPlayNumber = getInt(PLAY_COUNT, Random.nextInt(1000, 50000000))
-            }
-        } else {
-            randomPlayNumber = Random.nextInt(1000, 50000000)
-        }
+        currentSong = dotifyApp.songManager.currentPlay
+//        if (savedInstanceState != null) {
+//            with(savedInstanceState) {
+//                randomPlayNumber = getInt(PLAY_COUNT, Random.nextInt(1000, 50000000))
+//            }
+//        } else {
+//            randomPlayNumber = Random.nextInt(1000, 50000000)
+//        }
     }
 
     fun updateSong(song: Song) {
-        songImage.setImageResource(song.largeImageID)
+//        songImage.setImageResource(song.largeImageID)
+        this.currentSong = song
+        Picasso.get().load(song.largeImageURL).into(songImage)
         songTitle.text = song.title
         artist.text = song.artist
+//        updateSongViews()
     }
 
     override fun onCreateView(
@@ -55,16 +60,18 @@ class NowPlayingFragment : Fragment() {
     }
 
     private fun updateSongViews() {
-        arguments?.let { args ->
-            val song = args.getParcelable<Song>(SONG_REF)
-            if (song != null) {
-                songTitle.text = song.title
-                artist.text = song.artist
-                songImage.setImageResource(song.largeImageID)
-            }
+        currentSong?.let {
+//            val song = args.getParcelable<Song>(SONG_REF)
+//            if (it != null) {
+                songTitle.text = it.title
+                artist.text = it.artist
+//                songImage.setImageResource(song.largeImageID)
+                Picasso.get().load(it.largeImageURL).into(songImage)
+                songNumber.text = dotifyApp.playCounter.toString().plus(" play(s)")
+//            }
         }
 
-        songNumber.text = "$randomPlayNumber plays"
+//        songNumber.text = "$randomPlayNumber plays"
         previousBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
         }
@@ -73,8 +80,10 @@ class NowPlayingFragment : Fragment() {
         }
 
         musicPlayBtn.setOnClickListener{
-            randomPlayNumber += 1
-            songNumber.text = "$randomPlayNumber plays"
+//            randomPlayNumber += 1
+//            songNumber.text = "$randomPlayNumber plays"
+            dotifyApp.playCounter = dotifyApp.playCounter.plus(1)
+            songNumber.text = "${dotifyApp.playCounter} play(s)"
         }
 
         btnChangeUser.setOnClickListener{
@@ -102,9 +111,9 @@ class NowPlayingFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        randomPlayNumber?.let { outState.putInt(PLAY_COUNT, it) }
-        super.onSaveInstanceState(outState)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        randomPlayNumber?.let { outState.putInt(PLAY_COUNT, it) }
+//        super.onSaveInstanceState(outState)
+//    }
 
 }

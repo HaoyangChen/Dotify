@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ericchee.songdataprovider.Song
+import com.squareup.picasso.Picasso
 
 class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongListAdapter.SongViewHolder>() {
     private var listOfSongs: List<Song> = initialListOfSong.toList()
@@ -21,8 +21,7 @@ class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongLi
     override fun getItemCount() = listOfSongs.size
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int): Unit {
-        val song = listOfSongs[position]
-        holder.bind(song, position)
+        holder.bind(listOfSongs[position])
     }
 
     fun shuffle(newList: List<Song>) {
@@ -33,14 +32,19 @@ class SongListAdapter(initialListOfSong: List<Song>):RecyclerView.Adapter<SongLi
         this.listOfSongs = newList
     }
 
+    fun loadSong(listToLoad: List<Song>) {
+        this.listOfSongs = listToLoad
+        notifyDataSetChanged()
+    }
+
     inner class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val tvSongTitle = itemView.findViewById<TextView>(R.id.tvSongTitle)
         private val artistName = itemView.findViewById<TextView>(R.id.artistName)
         private val ivSongImage = itemView.findViewById<ImageView>(R.id.ivSongImage)
-        fun bind(song: Song, position: Int) {
+        fun bind(song: Song) {
             tvSongTitle.text = song.title
             artistName.text = song.artist
-            ivSongImage.setImageResource(song.smallImageID)
+            Picasso.get().load(song.smallImageURL).into(ivSongImage)
 
             itemView.setOnClickListener {
                 onSongClickListener?.invoke(song)

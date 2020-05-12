@@ -1,43 +1,49 @@
 package edu.washington.haoyac2.dotify
 
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.ericchee.songdataprovider.Song
-import com.ericchee.songdataprovider.SongDataProvider
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_ultimate_main.*
 
 class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
 
     private var currentSong: Song? = null
-    companion object {
-        private const val SELECTED_SONG = "SELECTED_SONG"
-    }
+    private var songListFragment: SongListFragment? = null
+    private lateinit var songManager: SongManager
+    private lateinit var apiManager: ApiManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ultimate_main)
+        val songList = supportFragmentManager.findFragmentByTag(SongListFragment.TAG) as? SongListFragment
+        songManager = (application as DotifyApp).songManager
+        apiManager = (application as DotifyApp).apiManager
 
-        if (savedInstanceState != null){
-            with(savedInstanceState) {
-                currentSong = getParcelable(SELECTED_SONG)
-                if (currentSong != null) {
-                    songTitleArtist.text = currentSong?.title.plus("-").plus(currentSong?.artist)
-                }
-            }
-        } else {
-            val songListFragment = SongListFragment()
-            var providedSongList = SongDataProvider.getAllSongs()
-            val argumentBundle = Bundle().apply {
-                var songList = providedSongList as ArrayList<Song>
-                putParcelableArrayList(SongListFragment.ARG_SONG, songList)
-            }
-            songListFragment.arguments = argumentBundle
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragContainer, songListFragment)
-                .commit()
+        if (songList == null) {
+            apiManager.getSongs ({ songList ->
+                songManager.listOfSongs = songList
+
+                songListFragment?.showSongList()
+                songListFragment = SongListFragment.getInstance()
+                supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.fragContainer, songListFragment!!, SongListFragment.TAG)
+                    .commit()
+
+            },
+                {
+                    Toast.makeText(this, "error ", Toast.LENGTH_SHORT).show()
+                })
+        }  ///////
+
+
+        this.currentSong = songManager.currentPlay
+        if (currentSong != null) {
+            songTitleArtist.text = currentSong?.title.plus(" - ").plus(currentSong?.artist)
         }
+
 
         supportFragmentManager.addOnBackStackChangedListener {
             val hasBackStack = supportFragmentManager.backStackEntryCount > 0
@@ -79,18 +85,18 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
 
     private fun miniPlayerClicked() {
         if (currentSong != null) {
-            val immutableNowPlayingFragment = getSongDetailFragment()
-            if(immutableNowPlayingFragment != null) {
-                immutableNowPlayingFragment.updateSong(currentSong!!)
+            var nowPlayingFragment = getSongDetailFragment()
+            if(nowPlayingFragment != null) {
+                nowPlayingFragment.updateSong(currentSong!!)
             } else {
-                val nowPlayingFragment = NowPlayingFragment()
-                val currentSongBundle = Bundle().apply {
-                    putParcelable(NowPlayingFragment.SONG_REF, currentSong)
-                }
-                nowPlayingFragment.arguments = currentSongBundle
+                nowPlayingFragment = NowPlayingFragment()
+//                val currentSongBundle = Bundle().apply {
+//                    putParcelable(NowPlayingFragment.SONG_REF, currentSong)
+//                }
+//                nowPlayingFragment = NowPlayingFragment()
                 supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.fragContainer, nowPlayingFragment)
+                    .add(R.id.fragContainer, nowPlayingFragment, NowPlayingFragment.TAG)
                     .addToBackStack(NowPlayingFragment.TAG)
                     .commit()
             }
@@ -98,8 +104,4 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(SELECTED_SONG, currentSong)
-        super.onSaveInstanceState(outState)
-    }
 }

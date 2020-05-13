@@ -8,7 +8,6 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_ultimate_main.*
 
 class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
-
     private var currentSong: Song? = null
     private var songListFragment: SongListFragment? = null
     private lateinit var songManager: SongManager
@@ -24,19 +23,17 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
         if (songList == null) {
             apiManager.getSongs ({ songList ->
                 songManager.listOfSongs = songList
-
                 songListFragment?.showSongList()
                 songListFragment = SongListFragment.getInstance()
                 supportFragmentManager
                     .beginTransaction()
                     .add(R.id.fragContainer, songListFragment!!, SongListFragment.TAG)
                     .commit()
-
             },
                 {
                     Toast.makeText(this, "error ", Toast.LENGTH_SHORT).show()
                 })
-        }  ///////
+        }
 
 
         this.currentSong = songManager.currentPlay
@@ -90,10 +87,6 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
                 nowPlayingFragment.updateSong(currentSong!!)
             } else {
                 nowPlayingFragment = NowPlayingFragment()
-//                val currentSongBundle = Bundle().apply {
-//                    putParcelable(NowPlayingFragment.SONG_REF, currentSong)
-//                }
-//                nowPlayingFragment = NowPlayingFragment()
                 supportFragmentManager
                     .beginTransaction()
                     .add(R.id.fragContainer, nowPlayingFragment, NowPlayingFragment.TAG)

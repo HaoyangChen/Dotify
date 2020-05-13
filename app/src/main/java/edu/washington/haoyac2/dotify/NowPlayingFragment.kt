@@ -8,15 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_playing_now.*
-import kotlin.random.Random
 
-/**
- * A simple [Fragment] subclass.
- */
 class NowPlayingFragment : Fragment() {
-//    private var randomPlayNumber = Random.nextInt(1000, 50000000)
     private var showApplyBtn = false
-    private lateinit var dotifyApp: DotifyApp
+    private lateinit var dotify: DotifyApp
     private var currentSong: Song? = null
 
     companion object {
@@ -25,25 +20,15 @@ class NowPlayingFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dotifyApp = context?.applicationContext as DotifyApp
-
-        currentSong = dotifyApp.songManager.currentPlay
-//        if (savedInstanceState != null) {
-//            with(savedInstanceState) {
-//                randomPlayNumber = getInt(PLAY_COUNT, Random.nextInt(1000, 50000000))
-//            }
-//        } else {
-//            randomPlayNumber = Random.nextInt(1000, 50000000)
-//        }
+        dotify = context?.applicationContext as DotifyApp
+        currentSong = dotify.songManager.currentPlay
     }
 
     fun updateSong(song: Song) {
-//        songImage.setImageResource(song.largeImageID)
         this.currentSong = song
         Picasso.get().load(song.largeImageURL).into(songImage)
         songTitle.text = song.title
         artist.text = song.artist
-//        updateSongViews()
     }
 
     override fun onCreateView(
@@ -61,17 +46,12 @@ class NowPlayingFragment : Fragment() {
 
     private fun updateSongViews() {
         currentSong?.let {
-//            val song = args.getParcelable<Song>(SONG_REF)
-//            if (it != null) {
                 songTitle.text = it.title
                 artist.text = it.artist
-//                songImage.setImageResource(song.largeImageID)
                 Picasso.get().load(it.largeImageURL).into(songImage)
-                songNumber.text = dotifyApp.playCounter.toString().plus(" play(s)")
-//            }
+                songNumber.text = dotify.playCounter.toString().plus(" play(s)")
         }
 
-//        songNumber.text = "$randomPlayNumber plays"
         previousBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
         }
@@ -80,10 +60,8 @@ class NowPlayingFragment : Fragment() {
         }
 
         musicPlayBtn.setOnClickListener{
-//            randomPlayNumber += 1
-//            songNumber.text = "$randomPlayNumber plays"
-            dotifyApp.playCounter = dotifyApp.playCounter.plus(1)
-            songNumber.text = "${dotifyApp.playCounter} play(s)"
+            dotify.playCounter = dotify.playCounter.plus(1)
+            songNumber.text = "${dotify.playCounter} play(s)"
         }
 
         btnChangeUser.setOnClickListener{
@@ -110,10 +88,5 @@ class NowPlayingFragment : Fragment() {
             }
         }
     }
-
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        randomPlayNumber?.let { outState.putInt(PLAY_COUNT, it) }
-//        super.onSaveInstanceState(outState)
-//    }
 
 }

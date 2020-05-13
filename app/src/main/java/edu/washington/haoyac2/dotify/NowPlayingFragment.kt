@@ -13,6 +13,7 @@ class NowPlayingFragment : Fragment() {
     private var showApplyBtn = false
     private lateinit var dotify: DotifyApp
     private var currentSong: Song? = null
+//    private var skipSongListener: SkipSongListener? = null
 
     companion object {
         val TAG: String = NowPlayingFragment::class.java.simpleName
@@ -50,6 +51,7 @@ class NowPlayingFragment : Fragment() {
                 artist.text = it.artist
                 Picasso.get().load(it.largeImageURL).into(songImage)
                 songNumber.text = dotify.playCounter.toString().plus(" play(s)")
+                userName.text = dotify.userName
         }
 
         previousBtn.setOnClickListener{
@@ -73,14 +75,17 @@ class NowPlayingFragment : Fragment() {
         if (!showApplyBtn) {
             btnChangeUser.text = "Apply"
             showApplyBtn = true
-            userNameInput.setText(userName.text)
+//            userNameInput.setText(userName.text)
+            userNameInput.setText(dotify.userName) //
             userName.visibility = View.GONE
             userNameInput.visibility = View.VISIBLE
         } else {
             if (userNameInput.text.toString().isNotEmpty()) {
                 btnChangeUser.text = "CHANGE USER"
                 showApplyBtn = false
-                userName.setText(userNameInput.text)
+//                userName.setText(userNameInput.text)
+                dotify.userName = userNameInput.text.toString()
+                userName.setText(dotify.userName)
                 userNameInput.visibility = View.GONE
                 userName.visibility = View.VISIBLE
             } else {
@@ -90,3 +95,9 @@ class NowPlayingFragment : Fragment() {
     }
 
 }
+
+//interface SkipSongListener {
+//    fun onSkipPrevSongClicked(song: Song)
+//    fun onSkipNextSongClicked(song: Song)
+//}
+

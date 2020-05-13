@@ -7,11 +7,12 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_ultimate_main.*
 
-class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
+class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener, SkipSongListener {
     private var currentSong: Song? = null
     private var songListFragment: SongListFragment? = null
     private lateinit var songManager: SongManager
     private lateinit var apiManager: ApiManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +95,34 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener {
                     .commit()
             }
             miniPlayer.visibility = View.INVISIBLE
+        }
+    }
+
+    override fun onSkipPrevSongListener(song: Song) {
+        val currentSongList = songManager.listOfSongs
+        if (currentSongList != null && currentSongList.size != 1) {
+            var prevSongIndex = currentSongList.indexOf(song) - 1
+            if (prevSongIndex < 0) {
+                prevSongIndex = currentSongList.size - 1
+            }
+            val prevSong = currentSongList[prevSongIndex]
+            songManager?.currentPlay = prevSong
+            songTitleArtist.text = prevSong.title.plus(" - ").plus(prevSong.artist)
+            getSongDetailFragment()?.updateSong(prevSong)
+        }
+    }
+
+    override fun onSkipNextSongListener(song: Song) {
+        val currentSongList = songManager.listOfSongs
+        if (currentSongList != null && currentSongList.size != 1) {
+            var nextSongIndex = currentSongList.indexOf(song) + 1
+            if (nextSongIndex >= currentSongList.size) {
+                nextSongIndex = 0
+            }
+            val nextSong = currentSongList[nextSongIndex]
+            songManager?.currentPlay = nextSong
+            songTitleArtist.text = nextSong.title.plus(" - ").plus(nextSong.artist)
+            getSongDetailFragment()?.updateSong(nextSong)
         }
     }
 

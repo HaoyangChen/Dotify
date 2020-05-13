@@ -1,5 +1,6 @@
 package edu.washington.haoyac2.dotify
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,10 +14,17 @@ class NowPlayingFragment : Fragment() {
     private var showApplyBtn = false
     private lateinit var dotify: DotifyApp
     private var currentSong: Song? = null
-//    private var skipSongListener: SkipSongListener? = null
+    private var skipSongListener: SkipSongListener? = null
 
     companion object {
         val TAG: String = NowPlayingFragment::class.java.simpleName
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is SkipSongListener) {
+            skipSongListener = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +64,24 @@ class NowPlayingFragment : Fragment() {
 
         previousBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
+            if (currentSong != null) {
+                val immutableSong = currentSong
+                if (immutableSong != null) {
+                    skipSongListener?.onSkipPrevSongListener(immutableSong)
+                }
+                currentSong = dotify?.songManager.currentPlay
+            }
         }
+
         nextBtn.setOnClickListener{
             Toast.makeText(context, "Skipping to next track", Toast.LENGTH_SHORT).show()
+            if (currentSong != null) {
+                val immutableSong = currentSong
+                if (immutableSong != null) {
+                    skipSongListener?.onSkipNextSongListener(immutableSong)
+                }
+                currentSong = dotify?.songManager.currentPlay
+            }
         }
 
         musicPlayBtn.setOnClickListener{
@@ -75,7 +98,6 @@ class NowPlayingFragment : Fragment() {
         if (!showApplyBtn) {
             btnChangeUser.text = "Apply"
             showApplyBtn = true
-//            userNameInput.setText(userName.text)
             userNameInput.setText(dotify.userName) //
             userName.visibility = View.GONE
             userNameInput.visibility = View.VISIBLE
@@ -96,8 +118,8 @@ class NowPlayingFragment : Fragment() {
 
 }
 
-//interface SkipSongListener {
-//    fun onSkipPrevSongClicked(song: Song)
-//    fun onSkipNextSongClicked(song: Song)
-//}
+interface SkipSongListener {
+    fun onSkipPrevSongListener(song: Song)
+    fun onSkipNextSongListener(song: Song)
+}
 

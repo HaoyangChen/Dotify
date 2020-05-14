@@ -63,7 +63,6 @@ class NowPlayingFragment : Fragment() {
         }
 
         previousBtn.setOnClickListener{
-//            Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
             if (currentSong != null) {
                 val immutableSong = currentSong
                 if (immutableSong != null) {
@@ -74,7 +73,6 @@ class NowPlayingFragment : Fragment() {
         }
 
         nextBtn.setOnClickListener{
-//            Toast.makeText(context, "Skipping to next track", Toast.LENGTH_SHORT).show()
             if (currentSong != null) {
                 val immutableSong = currentSong
                 if (immutableSong != null) {

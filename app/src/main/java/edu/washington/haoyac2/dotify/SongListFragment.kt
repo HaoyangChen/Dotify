@@ -12,7 +12,7 @@ class SongListFragment: Fragment() {
     private var songListAdapter: SongListAdapter? = null
     private var listOfSongs: List<Song>? = null;
     private var onSongClickedListener: OnSongClickedListener? = null
-    private lateinit var songManager: SongManager
+    private lateinit var musicManager: MusicManager
 
     companion object {
         val TAG: String = SongListFragment::class.java.simpleName
@@ -23,7 +23,7 @@ class SongListFragment: Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        songManager = (context.applicationContext as DotifyApp).songManager
+        musicManager = (context.applicationContext as DotifyApp).musicManager
 
         if (context is OnSongClickedListener) {
             onSongClickedListener = context
@@ -33,7 +33,7 @@ class SongListFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        this.listOfSongs = songManager.listOfSongs
+        this.listOfSongs = musicManager.listOfSongs
 
     }
 
@@ -51,20 +51,20 @@ class SongListFragment: Fragment() {
         rvSongs.adapter = songListAdapter
 
         songListAdapter?.onSongClickListener = { song ->
-            songManager.currentPlay = song
+            musicManager.currentPlay = song
             onSongClickedListener?.onSongClicked(song)
         }
     }
 
     fun shuffleList() {
-        songManager.shuffle()
-        listOfSongs = songManager.listOfSongs
+        musicManager.shuffle()
+        listOfSongs = musicManager.listOfSongs
         songListAdapter?.shuffle(listOfSongs!!)
         rvSongs.scrollToPosition(0)
     }
 
     fun showSongList() {
-        songListAdapter?.loadSong(songManager.listOfSongs)
+        songListAdapter?.loadSong(musicManager.listOfSongs)
     }
 }
 

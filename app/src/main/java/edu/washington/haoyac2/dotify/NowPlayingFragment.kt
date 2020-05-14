@@ -30,7 +30,7 @@ class NowPlayingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dotify = context?.applicationContext as DotifyApp
-        currentSong = dotify.songManager.currentPlay
+        currentSong = dotify.musicManager.currentPlay
     }
 
     fun updateSong(song: Song) {
@@ -63,24 +63,24 @@ class NowPlayingFragment : Fragment() {
         }
 
         previousBtn.setOnClickListener{
-            Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Skipping to previous track", Toast.LENGTH_SHORT).show()
             if (currentSong != null) {
                 val immutableSong = currentSong
                 if (immutableSong != null) {
                     skipSongListener?.onSkipPrevSongListener(immutableSong)
                 }
-                currentSong = dotify?.songManager.currentPlay
+                currentSong = dotify?.musicManager.currentPlay
             }
         }
 
         nextBtn.setOnClickListener{
-            Toast.makeText(context, "Skipping to next track", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Skipping to next track", Toast.LENGTH_SHORT).show()
             if (currentSong != null) {
                 val immutableSong = currentSong
                 if (immutableSong != null) {
                     skipSongListener?.onSkipNextSongListener(immutableSong)
                 }
-                currentSong = dotify?.songManager.currentPlay
+                currentSong = dotify?.musicManager.currentPlay
             }
         }
 

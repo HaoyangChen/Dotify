@@ -1,6 +1,5 @@
 package edu.washington.haoyac2.dotify
 
-import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_ultimate_main.*
 class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener, SkipSongListener {
     private var currentSong: Song? = null
     private var songListFragment: SongListFragment? = null
-    private lateinit var songManager: SongManager
+    private lateinit var musicManager: MusicManager
     private lateinit var apiManager: ApiManager
 
 
@@ -18,12 +17,12 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener, SkipSon
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ultimate_main)
         val songList = supportFragmentManager.findFragmentByTag(SongListFragment.TAG) as? SongListFragment
-        songManager = (application as DotifyApp).songManager
+        musicManager = (application as DotifyApp).musicManager
         apiManager = (application as DotifyApp).apiManager
 
         if (songList == null) {
-            apiManager.getSongs ({ songList ->
-                songManager.listOfSongs = songList
+            apiManager.fetchSongs ({ songList ->
+                musicManager.listOfSongs = songList
                 songListFragment?.showSongList()
                 songListFragment = SongListFragment.getInstance()
                 supportFragmentManager
@@ -37,7 +36,7 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener, SkipSon
         }
 
 
-        this.currentSong = songManager.currentPlay
+        this.currentSong = musicManager.currentPlay
         if (currentSong != null) {
             songTitleArtist.text = currentSong?.title.plus(" - ").plus(currentSong?.artist)
         }
@@ -99,29 +98,17 @@ class UltimateMainActivity : AppCompatActivity(), OnSongClickedListener, SkipSon
     }
 
     override fun onSkipPrevSongListener(song: Song) {
-        val currentSongList = songManager.listOfSongs
-        if (currentSongList != null && currentSongList.size != 1) {
-            var prevSongIndex = currentSongList.indexOf(song) - 1
-            if (prevSongIndex < 0) {
-                prevSongIndex = currentSongList.size - 1
-            }
-            val prevSong = currentSongList[prevSongIndex]
-            songManager?.currentPlay = prevSong
-            songTitleArtist.text = prevSong.title.plus(" - ").plus(prevSong.artist)
+        val prevSong = musicManager.prevSong(this)
+        songTitleArtist.text = musicManager.currentPlay?.title.plus(" - ").plus(musicManager.currentPlay?.artist)
+        if (prevSong != null) {
             getSongDetailFragment()?.updateSong(prevSong)
         }
     }
 
     override fun onSkipNextSongListener(song: Song) {
-        val currentSongList = songManager.listOfSongs
-        if (currentSongList != null && currentSongList.size != 1) {
-            var nextSongIndex = currentSongList.indexOf(song) + 1
-            if (nextSongIndex >= currentSongList.size) {
-                nextSongIndex = 0
-            }
-            val nextSong = currentSongList[nextSongIndex]
-            songManager?.currentPlay = nextSong
-            songTitleArtist.text = nextSong.title.plus(" - ").plus(nextSong.artist)
+        val nextSong = musicManager.nextSong(this)
+        songTitleArtist.text = musicManager.currentPlay?.title.plus(" - ").plus(musicManager.currentPlay?.artist)
+        if (nextSong != null) {
             getSongDetailFragment()?.updateSong(nextSong)
         }
     }

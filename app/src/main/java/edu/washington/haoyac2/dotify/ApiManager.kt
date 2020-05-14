@@ -1,7 +1,6 @@
 package edu.washington.haoyac2.dotify
 
 import android.content.Context
-import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.StringRequest
@@ -12,7 +11,7 @@ class ApiManager(context: Context) {
 
     private val queue: RequestQueue = Volley.newRequestQueue(context)
 
-    fun getSongs(onSongsReady: (List<Song>) -> Unit, onError: (() -> Unit)? = null) {
+    fun fetchSongs(onSongsReady: (List<Song>) -> Unit, onError: (() -> Unit)? = null) {
         val musicURL = "https://raw.githubusercontent.com/echeeUW/codesnippets/master/musiclibrary.json"
 
         val request = StringRequest(
@@ -25,7 +24,6 @@ class ApiManager(context: Context) {
             },
             {
                 onError?.invoke()
-                Log.i("error", it.toString())
             }
         )
 
